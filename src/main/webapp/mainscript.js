@@ -972,7 +972,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
 {
 
     popupBack.innerHTML = "";
-    let signUpForm = document.createElement("div");
+    let editForm = document.createElement("div");
 
     // element one
 
@@ -984,7 +984,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
     name.setAttribute("type", "text");
     eleOne.appendChild(name);
     eleOne.appendChild(nameWarn);
-    signUpForm.appendChild(eleOne);
+    editForm.appendChild(eleOne);
 
     // element Two
 
@@ -996,7 +996,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
     phoneNumber.setAttribute("type", "number");
     eleTwo.appendChild(phoneNumber);
     eleTwo.appendChild(phNumWarn);
-    signUpForm.appendChild(eleTwo);
+    editForm.appendChild(eleTwo);
 
     // element Three
 
@@ -1008,7 +1008,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
     hospitalName.setAttribute("type", "text");
     eleThree.appendChild(hospitalName);
     eleThree.appendChild(hospitalNameWarn);
-    signUpForm.appendChild(eleThree);
+    editForm.appendChild(eleThree);
 
 }
 

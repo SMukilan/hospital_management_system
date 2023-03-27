@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright 2002 Sun Microsystems, Inc. All rights reserved.
+-->
+<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web 
+     Application 2.3//EN' 'http://java.sun.com/dtd/web-app_2_3.dtd'>
+
+<web-app>
+
+	<display-name>HosManSysServlet</display-name>
+
+	<!-- Context param -->
+
+	<context-param>
+    	<param-name>database_name</param-name>
+    	<param-value>HospitalManagement</param-value>
+	</context-param>
+
+    <context-param>
+     	<param-name>database_username</param-name>
+    	<param-value>mukilan</param-value>
+    </context-param>
+	
+    <context-param>
+    	<param-name>database_password</param-name>
+     	<param-value>nalikUM#23!</param-value>
+    </context-param>
+    
+    <!-- Filters mapping -->
+
+    <!-- <filter>
+		<filter-name>SessionCheck</filter-name>
+		<filter-class>filters.SessionCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SessionCheck</filter-name>
+		<url-pattern>/CheckSession</url-pattern>
+	</filter-mapping> -->
+	
+	<filter>
+		<filter-name>Authentication</filter-name>
+		<filter-class>filters.AuthenticationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Authentication</filter-name>
+		<url-pattern>/CheckSession</url-pattern>
+		<url-pattern>/GetDoctors</url-pattern>
+	    <url-pattern>/AddDoctor</url-pattern>
+	    <url-pattern>/RemoveDoctor</url-pattern>
+	    <url-pattern>/EditDoctor</url-pattern>
+	    <url-pattern>/GetPatients</url-pattern>
+	    <url-pattern>/AdmitPatient</url-pattern>
+	    <url-pattern>/DischargePatient</url-pattern>
+	    <url-pattern>/EditPatient</url-pattern>
+	    <url-pattern>/SetPayment</url-pattern>
+	    <url-pattern>/AssignForDoctor</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>AuthorizationForAdmin</filter-name>
+		<filter-class>filters.AuthorizationFilterForAdmin</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthorizationForAdmin</filter-name>
+		<url-pattern>/GetDoctors</url-pattern>
+	    <url-pattern>/AddDoctor</url-pattern>
+	    <url-pattern>/RemoveDoctor</url-pattern>
+	    <url-pattern>/EditDoctor</url-pattern>
+	    <url-pattern>/GetPatients</url-pattern>
+	    <url-pattern>/AdmitPatient</url-pattern>
+	    <url-pattern>/DischargePatient</url-pattern>
+	    <url-pattern>/EditPatient</url-pattern>
+	    <url-pattern>/SetPayment</url-pattern>
+	    <url-pattern>/AssignForDoctor</url-pattern>
+	</filter-mapping>
+
+	<!-- Doctor manage filters -->
+	
+	<filter>
+		<filter-name>AddDoctorFilter</filter-name>
+		<filter-class>filters.AddDoctorFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AddDoctorFilter</filter-name>
+	    <url-pattern>/AddDoctor</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>EditDoctorFilter</filter-name>
+		<filter-class>filters.EditDoctorFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EditDoctorFilter</filter-name>
+	    <url-pattern>/EditDoctor</url-pattern>
+	</filter-mapping>
+
+	<!-- Patient manage filters -->
+
+	<filter>
+		<filter-name>AdmitPatientFilter</filter-name>
+		<filter-class>filters.AdmitPatientFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AdmitPatientFilter</filter-name>
+	    <url-pattern>/AdmitPatient</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>EditPatientFilter</filter-name>
+		<filter-class>filters.EditPatientFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EditPatientFilter</filter-name>
+	    <url-pattern>/EditPatient</url-pattern>
+	</filter-mapping>
+     
+	<!-- Servlets mapping -->
+	<!-- Common servelets -->
+
+	<servlet>
+     	<servlet-name>Signin</servlet-name>
+     	<servlet-class>servlets.SignInServlet</servlet-class>
+     	<load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>Signin</servlet-name>
+	    <url-pattern>/Signin</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+     	<servlet-name>Signup</servlet-name>
+     	<servlet-class>servlets.SignUpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>Signup</servlet-name>
+	    <url-pattern>/Signup</url-pattern>
+    </servlet-mapping>
+     
+    <servlet>
+     	<servlet-name>CheckSession</servlet-name>
+     	<servlet-class>servlets.CheckSession</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>CheckSession</servlet-name>
+	    <url-pattern>/CheckSession</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>LogOut</servlet-name>
+     	<servlet-class>servlets.LogOut</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>LogOut</servlet-name>
+	    <url-pattern>/LogOut</url-pattern>
+    </servlet-mapping>
+
+	<!-- Doctor manage servelets -->
+    
+    <servlet>
+     	<servlet-name>GetDoctors</servlet-name>
+     	<servlet-class>servlets.GetDoctors</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>GetDoctors</servlet-name>
+	    <url-pattern>/GetDoctors</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+     	<servlet-name>AddDoctor</servlet-name>
+     	<servlet-class>servlets.AddDoctor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>AddDoctor</servlet-name>
+	    <url-pattern>/AddDoctor</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+     	<servlet-name>RemoveDoctor</servlet-name>
+     	<servlet-class>servlets.RemoveDoctor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>RemoveDoctor</servlet-name>
+	    <url-pattern>/RemoveDoctor</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+     	<servlet-name>EditDoctor</servlet-name>
+     	<servlet-class>servlets.EditDoctor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>EditDoctor</servlet-name>
+	    <url-pattern>/EditDoctor</url-pattern>
+    </servlet-mapping>
+
+	<!-- Patient manage servelets -->
+
+	<servlet>
+     	<servlet-name>GetPatients</servlet-name>
+     	<servlet-class>servlets.GetPatients</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>GetPatients</servlet-name>
+	    <url-pattern>/GetPatients</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+     	<servlet-name>AdmitPatient</servlet-name>
+     	<servlet-class>servlets.AdmitPatient</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>AdmitPatient</servlet-name>
+	    <url-pattern>/AdmitPatient</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>DischargePatient</servlet-name>
+     	<servlet-class>servlets.DischargePatient</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>DischargePatient</servlet-name>
+	    <url-pattern>/DischargePatient</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>EditPatient</servlet-name>
+     	<servlet-class>servlets.EditPatient</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>EditPatient</servlet-name>
+	    <url-pattern>/EditPatient</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>SetPayment</servlet-name>
+     	<servlet-class>servlets.SetPayment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>SetPayment</servlet-name>
+	    <url-pattern>/SetPayment</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>AssignForDoctor</servlet-name>
+     	<servlet-class>servlets.AssignForDoctor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>AssignForDoctor</servlet-name>
+	    <url-pattern>/AssignForDoctor</url-pattern>
+    </servlet-mapping>
+	
+</web-app>

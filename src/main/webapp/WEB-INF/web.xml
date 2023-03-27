@@ -10,6 +10,7 @@
 	<display-name>HosManSysServlet</display-name>
 
 	<!-- Context param -->
+	<!-- DB conf -->
 
 	<context-param>
     	<param-name>database_name</param-name>
@@ -27,15 +28,6 @@
     </context-param>
     
     <!-- Filters mapping -->
-
-    <!-- <filter>
-		<filter-name>SessionCheck</filter-name>
-		<filter-class>filters.SessionCheckFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>SessionCheck</filter-name>
-		<url-pattern>/CheckSession</url-pattern>
-	</filter-mapping> -->
 	
 	<filter>
 		<filter-name>Authentication</filter-name>

@@ -580,7 +580,6 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
 
     userOptions.appendChild(profile);
     userOptions.appendChild(line);
-    // userOptions.innerHTML +="<hr>";
     userOptions.appendChild(logOut);
 
     // Doctor manage section creation
@@ -851,7 +850,8 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
 
     body.onclick = (event) =>
     {
-        if (event.target.id == "body" || event.target.id == "header")
+        if (event.target.id == "body" || event.target.id == "header" || event.target.id == "dashboard"
+            || event.target.id == "popupBack")
             userOptions.remove();
     };
 
@@ -893,12 +893,12 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
 {
 
     userOptions.remove();
-    console.log("hii");
     popupBack.innerHTML = "";
 
     let detailsBox = document.createElement("div");
     detailsBox.classList.add("addDoc");
-    detailsBox.style.width = "400px";
+    detailsBox.style.width = "350px";
+    detailsBox.style.height = "550px";
     detailsBox.style.padding = "50px 100px";
     detailsBox.style.alignItems = "start";
 
@@ -912,9 +912,6 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
     let id = document.createElement("h3");
     id.innerText = "User Id: " + userDetails.userId;
 
-    let password = document.createElement("h3");
-    password.innerText = "Phone number: " + userDetails.password;
-
     let phNumber = document.createElement("h3");
     phNumber.innerText = "Phone number: " + userDetails.phoneNumber;
 
@@ -922,31 +919,101 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
     hopitalName.innerText = "Hopital name: " + userDetails.hopitalName;
 
     let options = document.createElement("div");
-        options.style.width = "300px";
+        options.style.width = "350px";
         options.style.justifyContent = "space-between";
         options.style.flexDirection = "row";
         options.style.margin = "20px auto";
     let editDetails = document.createElement("button");
+    editDetails.style.margin = "0px";
     editDetails.innerText = "Edit details";
 
-    let close = document.createElement("button");
-    close.innerText = "Close";
+    let changePass = document.createElement("button");
+    changePass.style.margin = "0px";
+    changePass.innerText = "Change password";
 
     options.appendChild(editDetails);
-    options.appendChild(close);
+    options.appendChild(changePass);
+
+    let options2 = document.createElement("div");
+        options2.style.width = "300px";
+        options2.style.justifyContent = "space-between";
+        options2.style.flexDirection = "row";
+        options2.style.margin = "20px auto";
+    let deleteAcc = document.createElement("button");
+    deleteAcc.classList.add("removeButt");
+    deleteAcc.style.margin = "0px";
+    deleteAcc.innerText = "Delete account";
+
+    let close = document.createElement("button");
+    close.style.margin = "0px";
+    close.innerText = "Close";
+
+    options2.appendChild(deleteAcc);
+    options2.appendChild(close);
 
     detailsBox.appendChild(title);
     detailsBox.appendChild(name);
     detailsBox.appendChild(id);
-    detailsBox.appendChild(password);
     detailsBox.appendChild(phNumber);
     detailsBox.appendChild(hopitalName);
     detailsBox.appendChild(options);
+    detailsBox.appendChild(options2);
 
+    editDetails.onclick = () => editDetail(serverRequest, userDetails, popupBack, body);
+    editDetails.onclick = () => changePassword(serverRequest, userDetails, popupBack, body);
     close.onclick = () => popupBack.remove();
 
     popupBack.appendChild(detailsBox);
     body.appendChild(popupBack);
+
+}
+
+function editDetail(serverRequest, userDetails, popupBack, body)
+{
+
+    popupBack.innerHTML = "";
+    let signUpForm = document.createElement("div");
+
+    // element one
+
+    let eleOne = document.createElement("div");
+    let name = document.createElement("input");
+    let nameWarn = document.createElement("span");
+
+    name.setAttribute("placeholder", "Enter name");
+    name.setAttribute("type", "text");
+    eleOne.appendChild(name);
+    eleOne.appendChild(nameWarn);
+    signUpForm.appendChild(eleOne);
+
+    // element Two
+
+    let eleTwo = document.createElement("div");
+    let phoneNumber = document.createElement("input");
+    let phNumWarn = document.createElement("span");
+
+    phoneNumber.setAttribute("placeholder", "Enter phone number");
+    phoneNumber.setAttribute("type", "number");
+    eleTwo.appendChild(phoneNumber);
+    eleTwo.appendChild(phNumWarn);
+    signUpForm.appendChild(eleTwo);
+
+    // element Three
+
+    let eleThree = document.createElement("div");
+    let hospitalName = document.createElement("input");
+    let hospitalNameWarn = document.createElement("span");
+
+    hospitalName.setAttribute("placeholder", "Enter hospital name");
+    hospitalName.setAttribute("type", "text");
+    eleThree.appendChild(hospitalName);
+    eleThree.appendChild(hospitalNameWarn);
+    signUpForm.appendChild(eleThree);
+
+}
+
+function changePassword(serverRequest, userDetails, popupBack, body)
+{
 
 }
 

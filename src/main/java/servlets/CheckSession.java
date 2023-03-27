@@ -35,7 +35,7 @@ public class CheckSession extends HttpServlet
 		String adminId = (String) request.getAttribute("loggedInUser");
 		try
 		{
-			PreparedStatement sessionPreState = ApplicationVariables.dbConnection.prepareStatement("select userName from Admin where adminUserId like ?");
+			PreparedStatement sessionPreState = ApplicationVariables.dbConnection.prepareStatement("select userName, phoneNumber, userPassword, hopitalName from Admin where adminUserId like ?");
 			sessionPreState.setString(1, adminId);
 			ResultSet resultSet = sessionPreState.executeQuery();
 			
@@ -44,6 +44,9 @@ public class CheckSession extends HttpServlet
 				responseJsonObject.put("Message", "validSession");
 				responseJsonObject.put("userId", adminId);
 				responseJsonObject.put("userName", resultSet.getString(1));
+				responseJsonObject.put("phoneNumber", resultSet.getString(2));
+				responseJsonObject.put("password", "*".repeat(resultSet.getString(3).length()));
+				responseJsonObject.put("hopitalName", resultSet.getString(4));
 			}
 			else
 			{

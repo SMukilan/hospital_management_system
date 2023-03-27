@@ -570,13 +570,9 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     let userOptions = document.createElement("div");
     userOptions.id = "userOptions";
 
-    let viewProf = document.createElement("h3");
-    viewProf.innerText = "View profile";
-
     let logOut = document.createElement("h3");
-    logOut.innerText = "Logout";
+    logOut.innerText = "Log out";
 
-    userOptions.appendChild(viewProf);
     userOptions.innerHTML += "<hr>";
     userOptions.appendChild(logOut);
 
@@ -865,6 +861,7 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
             {
                 location.reload();
             }
+
         }
 
     };
@@ -881,6 +878,63 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     patiSearch.oninput = () => getPatients(patiSearch, patiFilter, patiSortby, patientsList, popupBack, body);
     patiFilter.onchange = () => getPatients(patiSearch, patiFilter, patiSortby, patientsList, popupBack, body);
     patiSortby.onchange = () => getPatients(patiSearch, patiFilter, patiSortby, patientsList, popupBack, body);
+
+}
+
+function viewProfile(serverRequest, userDetails, popupBack, body)
+{
+
+    console.log("hii");
+    popupBack.innerHTML = "";
+
+    let detailsBox = document.createElement("div");
+    detailsBox.classList.add("addDoc");
+    detailsBox.style.width = "400px";
+    detailsBox.style.padding = "50px 100px";
+    detailsBox.style.alignItems = "start";
+
+    let title = document.createElement("h2");
+    title.innerText = "Profile";
+    title.style.margin = "20px auto";
+
+    let name = document.createElement("h3");
+    name.innerText = "Name: " + userDetails.userName;
+
+    let id = document.createElement("h3");
+    id.innerText = "User Id: " + userDetails.userId;
+
+    let password = document.createElement("h3");
+    password.innerText = "Phone number: " + userDetails.password;
+
+    let phNumber = document.createElement("h3");
+    phNumber.innerText = "Phone number: " + userDetails.phoneNumber;
+
+    let hopitalName = document.createElement("h3");
+    hopitalName.innerText = "Hopital name: " + userDetails.hopitalName;
+
+    let options = document.createElement("div");
+        options.style.width = "300px";
+        options.style.justifyContent = "space-between";
+        options.style.flexDirection = "row";
+        options.style.margin = "20px auto";
+            let editDetails = document.createElement("button");
+            editDetails.innerText = "Edit details";
+
+            let close = document.createElement("button");
+            close.innerText = "Close";
+
+    detailsBox.appendChild(title);
+    detailsBox.appendChild(name);
+    detailsBox.appendChild(id);
+    detailsBox.appendChild(password);
+    detailsBox.appendChild(phNumber);
+    detailsBox.appendChild(hopitalName);
+    detailsBox.appendChild(options);
+
+    close.onclick = () => popupBack.remove();
+
+    popupBack.appendChild(detailsBox);
+    body.appendChild(popupBack);
 
 }
 

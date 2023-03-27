@@ -570,13 +570,17 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     let userOptions = document.createElement("div");
     userOptions.id = "userOptions";
 
-    let profile = document.createElement("h2");
-    profile.innerText = "View profile"
+    let profile = document.createElement("h3");
+    profile.innerText = "View profile";
+
+    let line = document.createElement("hr");
 
     let logOut = document.createElement("h3");
     logOut.innerText = "Log out";
 
-    userOptions.innerHTML += "<hr>";
+    userOptions.appendChild(profile);
+    userOptions.appendChild(line);
+    // userOptions.innerHTML +="<hr>";
     userOptions.appendChild(logOut);
 
     // Doctor manage section creation
@@ -868,7 +872,7 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
         }
 
     };
-    profile.onclick = () => viewProfile(serverRequest, userDetails,popupBack, body);
+    profile.onclick = () => viewProflie(serverRequest, userDetails, userOptions, popupBack, body);
 
     addDoc.onclick = () => addDoctor(docSearch, serverRequest, docFilter, docSortby, docsList, popupBack, body);
     admitPati.onclick = () => admitPatient(patiSearch, serverRequest, patiFilter, patiSortby, patientsList, popupBack, body);
@@ -885,9 +889,10 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
 
 }
 
-function viewProfile(serverRequest, userDetails, popupBack, body)
+function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
 {
 
+    userOptions.remove();
     console.log("hii");
     popupBack.innerHTML = "";
 
@@ -921,11 +926,14 @@ function viewProfile(serverRequest, userDetails, popupBack, body)
         options.style.justifyContent = "space-between";
         options.style.flexDirection = "row";
         options.style.margin = "20px auto";
-            let editDetails = document.createElement("button");
-            editDetails.innerText = "Edit details";
+    let editDetails = document.createElement("button");
+    editDetails.innerText = "Edit details";
 
-            let close = document.createElement("button");
-            close.innerText = "Close";
+    let close = document.createElement("button");
+    close.innerText = "Close";
+
+    options.appendChild(editDetails);
+    options.appendChild(close);
 
     detailsBox.appendChild(title);
     detailsBox.appendChild(name);

@@ -570,6 +570,9 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     let userOptions = document.createElement("div");
     userOptions.id = "userOptions";
 
+    let profile = document.createElement("h2");
+    profile.innerText = "View profile"
+
     let logOut = document.createElement("h3");
     logOut.innerText = "Log out";
 
@@ -865,6 +868,7 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
         }
 
     };
+    profile.onclick = () => viewProfile(serverRequest, userDetails,popupBack, body);
 
     addDoc.onclick = () => addDoctor(docSearch, serverRequest, docFilter, docSortby, docsList, popupBack, body);
     admitPati.onclick = () => admitPatient(patiSearch, serverRequest, patiFilter, patiSortby, patientsList, popupBack, body);

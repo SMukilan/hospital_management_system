@@ -31,6 +31,7 @@ public class CheckSession extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		JSONObject responseJsonObject = new JSONObject();
 		String adminId = (String) request.getAttribute("loggedInUser");
 		try

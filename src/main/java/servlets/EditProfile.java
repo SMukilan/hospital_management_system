@@ -55,7 +55,7 @@ public class EditProfile extends HttpServlet
 				if (resultSet.getString(1).equals("ACTIVE"))
 				{
 					
-					updateUserStatement = ApplicationVariables.dbConnection.prepareStatement("update Admin set userName = ?, phoneNumber = ?, hopitalName = ?, where adminUserId like ?");
+					updateUserStatement = ApplicationVariables.dbConnection.prepareStatement("update Admin set userName = ?, phoneNumber = ?, hopitalName = ? where adminUserId like ?");
 					
 					updateUserStatement.setString(1, name);
 					updateUserStatement.setString(2, phoneNumber);
@@ -91,6 +91,7 @@ public class EditProfile extends HttpServlet
 			response.setStatus(400);
 			responseJsonObject.put("Message", "Some unexpected error occured. please contact Adminstrator");
 		}
+		response.getWriter().append(responseJsonObject.toString());
 		
 	}
 

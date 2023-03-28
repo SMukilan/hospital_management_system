@@ -1087,33 +1087,41 @@ function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
                 if (serverRequest.readyState == 4)
                 {
     
+                    console.log(serverRequest.responseText);
                     let parsedJson = JSON.parse(serverRequest.responseText);
     
                     if (serverRequest.status == 400)
                     {
     
-                        if (parsedJson.name.length != 0)
+                        if (parsedJson.name != undefined)
                         {
                             nameWarn.innerText = parsedJson.name;
                             name.style.borderColor = "red";
                         }
-                        if (parsedJson.phoneNumber.length != 0)
+                        if (parsedJson.phoneNumber != undefined)
                         {
                             phNumWarn.innerText = parsedJson.phoneNumber;
                             phoneNumber.style.borderColor = "red";
                         }
-                        if (parsedJson.hospitalName.length != 0)
+                        if (parsedJson.hospitalName != undefined)
                         {
                             hospitalNameWarn.innerText = parsedJson.hospitalName;
                             hospitalName.style.borderColor = "red";
+                        }
+                        if (parsedJson.Message != undefined)
+                        {
+                            alert(parsedJson.Message);                            
                         }
     
                     }
                     else if (serverRequest.status == 200)
                     {
                         alert(parsedJson.Message);
-                        document.cookie = serverRequest.cookie;
-                        createDashBoard(mainContainer, serverRequest, parsedJson, body);
+                        userDetails.userName = nameValue;
+                        userDetails.phoneNumber = phoneNumberValue;
+                        userDetails.hospitalName = hospitalNameValue;
+                        editForm.remove();
+                        popupBack.appendChild(detailsBox);
                     }
 
                 }
@@ -1297,8 +1305,21 @@ function removeDoctor(docDetails, docSearch, serverRequest, filter, sortby, list
         conformationBox.appendChild(optionDiv);
 
     popupBack.appendChild(conformationBox);
+    
+    conformationBox.style.transform = "translate(-200%)";
+    conformationBox.style.transition = "all 0.4s";
 
-    cancelButt.onclick = () => popupBack.remove();
+    setTimeout(() => {
+        conformationBox.style.transform = "translate(0%)";
+    }, 10)
+
+    cancelButt.onclick = () => {
+        conformationBox.style.transform = "translate(-200%)";
+        setTimeout(() => {
+            popupBack.remove();
+        }, 410);
+    }
+
     yesButt.onclick = () =>
     {
         let responseJson = {};
@@ -1314,17 +1335,14 @@ function removeDoctor(docDetails, docSearch, serverRequest, filter, sortby, list
             if (serverRequest.readyState == 4)
             {
 
-                popupBack.remove();
                 let message = JSON.parse(serverRequest.responseText);
-                if (serverRequest.status == 400)
-                {
-                    alert(message.Message);
-                }
-                else if (serverRequest.status == 200)
-                {
+
+                conformationBox.style.transform = "translate(-200%)";
+                setTimeout(() => {
+                    popupBack.remove();
                     alert(message.Message);
                     getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, body);
-                }
+                }, 410);
 
             }
 
@@ -1446,16 +1464,26 @@ function addDoctor(docSearch, serverRequest, filter, sortby, list, popupBack, bo
     popupBack.appendChild(form);
     body.appendChild(popupBack);
 
+    setTimeout(() => {
+        form.style.transform = "translate(0%)";
+    }, 10)
+
     submit.onclick = () => validateAddDoctor(serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
         totalAvailTime, docnameWarn, phNumWarn, specialistWarn, qualiWarn, startAvailableTimeWarn, totalAvailTimeWarn,
-        docSearch, filter, sortby, list, popupBack, body);
-    cancel.onclick = () => popupBack.remove();
+        docSearch, filter, sortby, list, form, popupBack, body);
+    cancel.onclick = () =>
+    {
+        form.style.transform = "translate(-188%)";
+        setTimeout(() => {
+            popupBack.remove();
+        }, 410);
+    };
 
 }
 
 function validateAddDoctor(serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
     totalAvailTime, docnameWarn, phNumWarn, specialistWarn, qualiWarn, startAvailableTimeWarn, totalAvailTimeWarn,
-    docSearch, filter, sortby, list, popupBack, body)
+    docSearch, filter, sortby, list, form, popupBack, body)
 {
 
     docnameWarn.innerText = "";
@@ -1580,8 +1608,11 @@ function validateAddDoctor(serverRequest, docName, phoneNumber, specialist, qual
                 }
                 else if (serverRequest.status == 200)
                 {
-                    popupBack.remove();
-                    alert(parsedJson.Message);
+                    form.style.transform = "translate(-188%)";
+                    setTimeout(() => {
+                        popupBack.remove();
+                        alert(parsedJson.Message);
+                    }, 410);
                     getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, body);
                 }
 

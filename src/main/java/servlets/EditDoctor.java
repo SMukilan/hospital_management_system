@@ -30,6 +30,7 @@ public class EditDoctor extends HttpServlet
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		
 		String adminId = (String) request.getAttribute("loggedInUser");
 		JSONObject responseJsonObject = new JSONObject();
 		try

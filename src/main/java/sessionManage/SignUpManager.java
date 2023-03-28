@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import applicationVariables.ApplicationVariables;
 import dataBaseUpdater.AddNewAdminOnDB;
@@ -20,6 +18,7 @@ import enums.AdminStatus;
 
 public class SignUpManager
 {
+	
 	private static SignUpManager instance = null;
 	private SignUpManager() {}
 	
@@ -51,16 +50,6 @@ public class SignUpManager
 		try
 		{
 			fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
-		}
-		catch (ParseException pe)
-		{
-			pe.printStackTrace();
-			resultArray[2] = "400";
-			resultArray[0] = "Error occured please give valid input !!";
-		}
-		
-		try
-		{
 		
 			String name = (String) fullJsonObject.get("name");
 			String phoneNumber = (String) fullJsonObject.get("phoneNumber");
@@ -136,11 +125,11 @@ public class SignUpManager
 			}
 			
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			resultArray[2] = "400";
-			resultArray[0] = "Error occured please give a valid input !!";
 			e.printStackTrace();
+			resultArray[2] = "400";
+			resultArray[0] = "Error occured please give valid input !!";
 		}
 		
 		return resultArray;

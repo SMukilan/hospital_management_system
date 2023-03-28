@@ -925,7 +925,7 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
         options.style.margin = "20px auto";
     let editDetails = document.createElement("button");
     editDetails.style.margin = "0px";
-    editDetails.innerText = "Edit details";
+    editDetails.innerText = "Edit profile";
 
     let changePass = document.createElement("button");
     changePass.style.margin = "0px";
@@ -959,8 +959,8 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
     detailsBox.appendChild(options);
     detailsBox.appendChild(options2);
 
-    editDetails.onclick = () => editDetail(serverRequest, userDetails, popupBack, body);
-    editDetails.onclick = () => changePassword(serverRequest, userDetails, popupBack, body);
+    editDetails.onclick = () => editDetail(serverRequest, detailsBox, userDetails, popupBack, body);
+    changePass.onclick = () => changePassword(serverRequest, detailsBox, userDetails, popupBack, body);
     close.onclick = () => popupBack.remove();
 
     popupBack.appendChild(detailsBox);
@@ -968,11 +968,19 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
 
 }
 
-function editDetail(serverRequest, userDetails, popupBack, body)
+function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
 {
 
-    popupBack.innerHTML = "";
+    detailsBox.remove();
     let editForm = document.createElement("div");
+    editForm.style.height = "550px";
+    editForm.style.width = "500px";
+
+    // Title
+
+    let title = document.createElement("h2");
+    title.innerText = "Edit profile";
+    editForm.appendChild(title);
 
     // element one
 
@@ -982,6 +990,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
 
     name.setAttribute("placeholder", "Enter name");
     name.setAttribute("type", "text");
+    name.value = userDetails.userName;
     eleOne.appendChild(name);
     eleOne.appendChild(nameWarn);
     editForm.appendChild(eleOne);
@@ -994,6 +1003,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
 
     phoneNumber.setAttribute("placeholder", "Enter phone number");
     phoneNumber.setAttribute("type", "number");
+    phoneNumber.value = userDetails.phoneNumber;
     eleTwo.appendChild(phoneNumber);
     eleTwo.appendChild(phNumWarn);
     editForm.appendChild(eleTwo);
@@ -1006,9 +1016,119 @@ function editDetail(serverRequest, userDetails, popupBack, body)
 
     hospitalName.setAttribute("placeholder", "Enter hospital name");
     hospitalName.setAttribute("type", "text");
+    hospitalName.value = userDetails.hopitalName;
     eleThree.appendChild(hospitalName);
     eleThree.appendChild(hospitalNameWarn);
     editForm.appendChild(eleThree);
+
+    // action section
+
+    let actionSection = document.createElement("div");
+    let update = document.createElement("button");
+    let cancel = document.createElement("button");
+
+    actionSection.style.flexDirection = "row";
+    actionSection.style.width = "300px";
+    actionSection.style.justifyContent = "space-between";
+    update.innerText = "Update";
+    cancel.innerText = "Cancel";
+    actionSection.appendChild(update);
+    actionSection.appendChild(cancel);
+    editForm.appendChild(actionSection);
+
+    editForm.classList.add("addDoc");
+    popupBack.appendChild(editForm);
+
+    update.onclick = () =>
+    {
+
+        let responseJson = {};
+        let nameValue = name.value.trim();
+        let phoneNumberValue = phoneNumber.value.trim().replaceAll(" ", "");
+        let hospitalNameValue = hospitalName.value.trim();
+
+        nameWarn.innerText = "";
+        phNumWarn.innerText = "";
+        hospitalNameWarn.innerText = "";
+
+        name.style.borderColor = "";
+        phoneNumber.style.borderColor = "";
+        hospitalName.style.borderColor = "";
+
+        if (!/^[a-zA-Z.\s]+$/.test(nameValue) || nameValue.length < 2 || nameValue.length > 80)
+        {
+            nameWarn.innerText = "Enter a valid name.\n Don't use numbers and special characters!";
+            name.style.borderColor = "red";
+        }
+        else if (!/^\d+$/.test(phoneNumberValue) || phoneNumberValue.length != 10)
+        {
+            phNumWarn.innerText = "Enter a valid phone number.";
+            phoneNumber.style.borderColor = "red";
+        }
+        else if (!/^[a-zA-Z.\s]+$/.test(hospitalNameValue))
+        {
+            hospitalNameWarn.innerText = "Enter a valid hospital name.\n Don't use numbers and special characters!";
+            hospitalName.style.borderColor = "red";
+        }
+        else
+        {
+    
+            responseJson.name = nameValue;
+            responseJson.phoneNumber = phoneNumberValue;
+            responseJson.hospitalName = hospitalNameValue;
+    
+            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/EditProfile");
+            serverRequest.setRequestHeader("Content-Type" ,"application/json");
+            serverRequest.send(JSON.stringify(responseJson));
+    
+            serverRequest.onreadystatechange = () =>
+            {
+    
+                if (serverRequest.readyState == 4)
+                {
+    
+                    let parsedJson = JSON.parse(serverRequest.responseText);
+    
+                    if (serverRequest.status == 400)
+                    {
+    
+                        if (parsedJson.name.length != 0)
+                        {
+                            nameWarn.innerText = parsedJson.name;
+                            name.style.borderColor = "red";
+                        }
+                        if (parsedJson.phoneNumber.length != 0)
+                        {
+                            phNumWarn.innerText = parsedJson.phoneNumber;
+                            phoneNumber.style.borderColor = "red";
+                        }
+                        if (parsedJson.hospitalName.length != 0)
+                        {
+                            hospitalNameWarn.innerText = parsedJson.hospitalName;
+                            hospitalName.style.borderColor = "red";
+                        }
+    
+                    }
+                    else if (serverRequest.status == 200)
+                    {
+                        alert(parsedJson.Message);
+                        document.cookie = serverRequest.cookie;
+                        createDashBoard(mainContainer, serverRequest, parsedJson, body);
+                    }
+
+                }
+
+            }
+    
+        }
+
+    }
+
+    cancel.onclick = () =>
+    {
+        editForm.remove();
+        popupBack.appendChild(detailsBox);
+    }
 
 }
 

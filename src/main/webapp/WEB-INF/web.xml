@@ -46,6 +46,7 @@
 	    <url-pattern>/EditPatient</url-pattern>
 	    <url-pattern>/SetPayment</url-pattern>
 	    <url-pattern>/AssignForDoctor</url-pattern>
+	    <url-pattern>/EditProfile</url-pattern>
 	</filter-mapping>
 	
 	<filter>
@@ -64,6 +65,18 @@
 	    <url-pattern>/EditPatient</url-pattern>
 	    <url-pattern>/SetPayment</url-pattern>
 	    <url-pattern>/AssignForDoctor</url-pattern>
+	    <url-pattern>/EditProfile</url-pattern>
+	</filter-mapping>
+
+	<!-- Profile manage filters -->
+
+	<filter>
+		<filter-name>EditProfileFilter</filter-name>
+		<filter-class>filters.EditProfileFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EditProfileFilter</filter-name>
+	    <url-pattern>/EditProfile</url-pattern>
 	</filter-mapping>
 
 	<!-- Doctor manage filters -->
@@ -135,6 +148,15 @@
     <servlet-mapping>
 	    <servlet-name>CheckSession</servlet-name>
 	    <url-pattern>/CheckSession</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>EditProfile</servlet-name>
+     	<servlet-class>servlets.EditProfile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>EditProfile</servlet-name>
+	    <url-pattern>/EditProfile</url-pattern>
     </servlet-mapping>
 
 	<servlet>

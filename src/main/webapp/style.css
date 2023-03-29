@@ -371,7 +371,7 @@ select
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    transform: translate(-200%);
+    transform: translate(-300%);
     transition: all 0.4s;
 }
 

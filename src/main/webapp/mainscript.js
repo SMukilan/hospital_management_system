@@ -872,7 +872,10 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
         }
 
     };
-    profile.onclick = () => viewProflie(serverRequest, userDetails, userOptions, popupBack, body);
+    profile.onclick = () => {
+        userOptions.remove();
+        viewProflie(serverRequest, userDetails, popupBack, body)
+    };
 
     addDoc.onclick = () => addDoctor(docSearch, serverRequest, docFilter, docSortby, docsList, popupBack, body);
     admitPati.onclick = () => admitPatient(patiSearch, serverRequest, patiFilter, patiSortby, patientsList, popupBack, body);
@@ -889,10 +892,9 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
 
 }
 
-function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
+function viewProflie(serverRequest, userDetails, popupBack, body)
 {
 
-    userOptions.remove();
     popupBack.innerHTML = "";
 
     let detailsBox = document.createElement("div");
@@ -915,8 +917,8 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
     let phNumber = document.createElement("h3");
     phNumber.innerText = "Phone number: " + userDetails.phoneNumber;
 
-    let hopitalName = document.createElement("h3");
-    hopitalName.innerText = "Hopital name: " + userDetails.hopitalName;
+    let hospitalName = document.createElement("h3");
+    hospitalName.innerText = "Hospital name: " + userDetails.hospitalName;
 
     let options = document.createElement("div");
         options.style.width = "350px";
@@ -955,23 +957,44 @@ function viewProflie(serverRequest, userDetails, userOptions, popupBack, body)
     detailsBox.appendChild(name);
     detailsBox.appendChild(id);
     detailsBox.appendChild(phNumber);
-    detailsBox.appendChild(hopitalName);
+    detailsBox.appendChild(hospitalName);
     detailsBox.appendChild(options);
     detailsBox.appendChild(options2);
 
-    editDetails.onclick = () => editDetail(serverRequest, detailsBox, userDetails, popupBack, body);
-    changePass.onclick = () => changePassword(serverRequest, detailsBox, userDetails, popupBack, body);
-    close.onclick = () => popupBack.remove();
+    editDetails.onclick = () => {
+        detailsBox.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            editDetail(serverRequest, userDetails, popupBack, body);
+        }, 410);
+    };
+
+    changePass.onclick = () => {
+        detailsBox.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            changePassword(serverRequest, userDetails, popupBack, body);
+        }, 410);
+    };
+
+    close.onclick = () => {
+        detailsBox.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            popupBack.remove()
+        }, 410);
+    };
+
+    setTimeout(() => {
+        detailsBox.style.transform = "translate(0%)";
+    }, 10);
 
     popupBack.appendChild(detailsBox);
     body.appendChild(popupBack);
 
 }
 
-function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
+function editDetail(serverRequest, userDetails, popupBack, body)
 {
 
-    detailsBox.remove();
+    popupBack.innerHTML = "";
     let editForm = document.createElement("div");
     editForm.style.height = "550px";
     editForm.style.width = "500px";
@@ -1016,7 +1039,7 @@ function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
 
     hospitalName.setAttribute("placeholder", "Enter hospital name");
     hospitalName.setAttribute("type", "text");
-    hospitalName.value = userDetails.hopitalName;
+    hospitalName.value = userDetails.hospitalName;
     eleThree.appendChild(hospitalName);
     eleThree.appendChild(hospitalNameWarn);
     editForm.appendChild(eleThree);
@@ -1038,6 +1061,10 @@ function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
 
     editForm.classList.add("addDoc");
     popupBack.appendChild(editForm);
+
+    setTimeout(() => {
+        editForm.style.transform = "translate(0%)";
+    }, 10);
 
     update.onclick = () =>
     {
@@ -1120,8 +1147,11 @@ function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
                         userDetails.userName = nameValue;
                         userDetails.phoneNumber = phoneNumberValue;
                         userDetails.hospitalName = hospitalNameValue;
-                        editForm.remove();
-                        popupBack.appendChild(detailsBox);
+
+                        editForm.style.transform = "translate(-300%)";
+                        setTimeout(() => {
+                            viewProflie(serverRequest, userDetails, popupBack, body);
+                        }, 410);
                     }
 
                 }
@@ -1134,8 +1164,11 @@ function editDetail(serverRequest, detailsBox, userDetails, popupBack, body)
 
     cancel.onclick = () =>
     {
-        editForm.remove();
-        popupBack.appendChild(detailsBox);
+        editForm.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            editForm.remove();
+            viewProflie(serverRequest, userDetails, popupBack, body)
+        }, 410);
     }
 
 }
@@ -1306,15 +1339,15 @@ function removeDoctor(docDetails, docSearch, serverRequest, filter, sortby, list
 
     popupBack.appendChild(conformationBox);
     
-    conformationBox.style.transform = "translate(-200%)";
+    conformationBox.style.transform = "translate(-300%)";
     conformationBox.style.transition = "all 0.4s";
 
     setTimeout(() => {
         conformationBox.style.transform = "translate(0%)";
-    }, 10)
+    }, 10);
 
     cancelButt.onclick = () => {
-        conformationBox.style.transform = "translate(-200%)";
+        conformationBox.style.transform = "translate(-300%)";
         setTimeout(() => {
             popupBack.remove();
         }, 410);
@@ -1336,11 +1369,11 @@ function removeDoctor(docDetails, docSearch, serverRequest, filter, sortby, list
             {
 
                 let message = JSON.parse(serverRequest.responseText);
+                alert(message.Message);
 
-                conformationBox.style.transform = "translate(-200%)";
+                conformationBox.style.transform = "translate(-300%)";
                 setTimeout(() => {
                     popupBack.remove();
-                    alert(message.Message);
                     getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, body);
                 }, 410);
 
@@ -1691,9 +1724,30 @@ function viewDocDetails(event, details,  docSearch, serverRequest, filter, sortb
         detailsBox.appendChild(viewAssignedPati);
         detailsBox.appendChild(options);
 
-        viewAssignedPati.onclick = () => viewAssignedPatients(details, serverRequest, detailsBox, popupBack);
-        editDetails.onclick = () => editDocDetails(detailsBox, details, docSearch, serverRequest, filter, sortby, list, popupBack, body);
-        close.onclick = () => popupBack.remove();
+        setTimeout(() => {
+            detailsBox.style.transform = "translate(0%)";
+        }, 10);
+
+        viewAssignedPati.onclick = () =>  {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                viewAssignedPatients(event, details,  docSearch, serverRequest, filter, sortby, list, popupBack, body);
+            }, 410);
+        };
+
+        editDetails.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                editDocDetails(event, details, docSearch, serverRequest, filter, sortby, list, popupBack, body)
+            }, 410);
+        };
+
+        close.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+            }, 410);
+        };
 
         popupBack.appendChild(detailsBox);
         body.appendChild(popupBack);
@@ -1702,7 +1756,7 @@ function viewDocDetails(event, details,  docSearch, serverRequest, filter, sortb
 
 }
 
-function editDocDetails(detailsBox, details, docSearch, serverRequest, filter, sortby, list, popupBack, body)
+function editDocDetails(event, details, docSearch, serverRequest, filter, sortby, list, popupBack, body)
 {
 
     popupBack.innerHTML = "";
@@ -1815,21 +1869,28 @@ function editDocDetails(detailsBox, details, docSearch, serverRequest, filter, s
     form.appendChild(elementSix);
     form.appendChild(actionSection);
 
+    setTimeout(() => {
+        form.style.transform = "translate(0%)";
+    }, 10);
+
     form.classList.add("addDoc");
     popupBack.appendChild(form);
     body.appendChild(popupBack);
 
-    submit.onclick = () => validateEditDoctor(details.docId, serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
+    submit.onclick = () => validateEditDoctor(details.docId, form, serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
         totalAvailTime, docnameWarn, phNumWarn, specialistWarn, qualiWarn, startAvailableTimeWarn, totalAvailTimeWarn,
         docSearch, filter, sortby, list, popupBack, body);
-    cancel.onclick = () => {
-        form.remove();
-        popupBack.appendChild(detailsBox);
+    cancel.onclick = () =>
+    {
+        form.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            viewDocDetails(event, details,  docSearch, serverRequest, filter, sortby, list, popupBack, body);
+        }, 410);
     }
 
 }
 
-function validateEditDoctor(docId, serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
+function validateEditDoctor(docId, form, serverRequest, docName, phoneNumber, specialist, qualification, startAvailableTime, amOrPm,
     totalAvailTime, docnameWarn, phNumWarn, specialistWarn, qualiWarn, startAvailableTimeWarn, totalAvailTimeWarn,
     docSearch, filter, sortby, list, popupBack, body)
 {
@@ -1957,9 +2018,12 @@ function validateEditDoctor(docId, serverRequest, docName, phoneNumber, speciali
                 }
                 else if (serverRequest.status == 200)
                 {
-                    popupBack.remove();
                     alert(parsedJson.Message);
-                    getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, body);
+                    form.style.transform = "translate(-300%)";
+                    setTimeout(() => {
+                        popupBack.remove();
+                        getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, body);
+                    }, 410);
                 }
 
             }
@@ -1970,7 +2034,7 @@ function validateEditDoctor(docId, serverRequest, docName, phoneNumber, speciali
 
 }
 
-function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
+function viewAssignedPatients(event, details,  docSearch, serverRequest, filter, sortby, lists, popupBack, body)
 {
 
     let responseJson = {};
@@ -1989,6 +2053,7 @@ function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
         if (serverRequest.readyState == 4)
         {
 
+            popupBack.innerHTML = "";
             let listCover = document.createElement("div");
             listCover.style.display = "flex";
             listCover.style.flexDirection = "column";
@@ -1997,6 +2062,8 @@ function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
             listCover.style.borderRadius = "10px";
             listCover.style.border = "3px solid";
             listCover.style.padding = "0px 20px";
+            listCover.style.transform = "translate(-300%)";
+            listCover.style.transition = "all 0.4s";
 
             let title = document.createElement("h2");
             title.innerText = "Assigned patients";
@@ -2008,7 +2075,7 @@ function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
             list.style.borderRadius = "10px";
             list.style.border = "2px solid";
             list.classList.add("list");
-            detailsBox.remove();
+
             if (serverRequest.status == 200)
             {
 
@@ -2082,14 +2149,22 @@ function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
                 close.style.fontSize = "large";
                 close.style.padding = "10px 20px";
 
+                setTimeout(() => {
+                    listCover.style.transform = "translate(0%)";
+                }, 10);
+
                 listCover.appendChild(list);
                 listCover.appendChild(close);
                 popupBack.appendChild(listCover);
 
                 close.onclick = () =>
                 {
-                    popupBack.appendChild(detailsBox);
-                    listCover.remove();
+
+                    listCover.style.transform = "translate(-300%)";
+                    setTimeout(() => {
+                        viewDocDetails(event, details,  docSearch, serverRequest, filter, sortby, lists, popupBack, body);
+                    }, 410);
+
                 }
 
             }
@@ -2097,8 +2172,11 @@ function viewAssignedPatients(details, serverRequest, detailsBox, popupBack)
             {
                 alert(JSON.parse(serverRequest.responseText).Message);
             }
+
         }
+
     }
+
 }
 
 // ---------- Patient section ----------
@@ -2283,10 +2361,14 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
         form.appendChild(admissionNum);
         form.appendChild(elementOne);
         form.appendChild(actionSection);
-
+        
         form.classList.add("addDoc");
         popupBack.appendChild(form);
         body.appendChild(popupBack);
+
+        setTimeout(() => {
+            form.style.transform = "translate(0%)";
+        }, 10);
 
         submit.onclick = () =>
         {
@@ -2326,10 +2408,13 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
                         }
                         else if (serverRequest.status == 200)
                         {
-                            popupBack.remove();
-                            alert(parsedJson.Message);
                             patientDetails.feePaid = payment.value;
-                            dischargePatient(patientDetails, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
+                            alert(parsedJson.Message);
+                            form.style.transform = "translate(-300%)";
+                            setTimeout(() => {
+                                popupBack.remove();
+                                dischargePatient(patientDetails, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
+                            }, 410);
                         }
 
                     }
@@ -2346,9 +2431,10 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
         }
 
         cancel.onclick = () => {
-            form.remove();
-            popupBack.appendChild(detailsBox);
-    
+            form.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+            }, 410);
         }
 
     }
@@ -2380,8 +2466,20 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
             conformationBox.appendChild(optionDiv);
 
         popupBack.appendChild(conformationBox);
+        
+        conformationBox.style.transform = "translate(-300%)";
+        conformationBox.style.transition = "all 0.4s";
+    
+        setTimeout(() => {
+            conformationBox.style.transform = "translate(0%)";
+        }, 10);
 
-        cancelButt.onclick = () => popupBack.remove();
+        cancelButt.onclick = () => {
+            conformationBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+            }, 410);
+        }
         yesButt.onclick = () =>
         {
 
@@ -2398,16 +2496,23 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
                 if (serverRequest.readyState == 4)
                 {
 
-                    popupBack.remove();
                     let message = JSON.parse(serverRequest.responseText);
                     if (serverRequest.status == 400)
                     {
                         alert(message.Message);
+                        setTimeout(() => {
+                            popupBack.remove();
+                            getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                        }, 410);
                     }
                     else if (serverRequest.status == 200)
                     {
                         alert(message.Message);
-                        getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                        conformationBox.style.transform = "translate(-300%)";
+                        setTimeout(() => {
+                            popupBack.remove();
+                            getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                        }, 410);
                     }
 
                 }
@@ -2519,14 +2624,24 @@ function admitPatient(patiSearch, serverRequest, filter, sortby, list, popupBack
     popupBack.appendChild(form);
     body.appendChild(popupBack);
 
-    submit.onclick = () => validateAdmitPatient(serverRequest, patiName, phoneNumber, patiAge, gender,
+    setTimeout(() => {
+        form.style.transform = "translate(0%)";
+    }, 10);
+
+    submit.onclick = () => validateAdmitPatient(serverRequest, form, patiName, phoneNumber, patiAge, gender,
         disease, patiNameWarn, phNumWarn, patiAgeWarn, genderWarn, diseaseWarn,
         patiSearch, filter, sortby, list, popupBack, body);
-    cancel.onclick = () => popupBack.remove();
+
+    cancel.onclick = () => {
+        form.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            popupBack.remove();
+        }, 410);
+    }
     
 }
 
-function validateAdmitPatient(serverRequest, patiName, phoneNumber, age, gender,
+function validateAdmitPatient(serverRequest, form, patiName, phoneNumber, age, gender,
     disease, patiNameWarn, phNumWarn, ageWarn, genderWarn, diseaseWarn,
     patiSearch, filter, sortby, list, popupBack, body)
 {
@@ -2631,9 +2746,12 @@ function validateAdmitPatient(serverRequest, patiName, phoneNumber, age, gender,
                 }
                 else if (serverRequest.status == 200)
                 {
-                    popupBack.remove();
                     alert(parsedJson.Message);
-                    getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                    form.style.transform = "translate(-300%)";
+                    setTimeout(() => {
+                        popupBack.remove();
+                        getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                    }, 410);
                 }
 
             }
@@ -2737,6 +2855,13 @@ function viewPatientDetails(events, details, patiSearch, serverRequest, filter, 
         detailsBox.appendChild(dischargedDate);
         detailsBox.appendChild(feePaid);
 
+        detailsBox.style.transform = "translate(-300%)";
+        detailsBox.style.transition = "all 0.4s";
+
+        setTimeout(() => {
+            detailsBox.style.transform = "translate(0%)";
+        }, 10);
+
         if (details.admissionStatus == "ADMITTED")
         {
             detailsBox.appendChild(assignForDoc);
@@ -2748,10 +2873,33 @@ function viewPatientDetails(events, details, patiSearch, serverRequest, filter, 
         options.appendChild(close);
         detailsBox.appendChild(options);
 
-        assignForDoc.onclick = () => assignForDoctor(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
-        editDetails.onclick = () => editPatientDetails(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
-        setPayment.onclick = () => setPaymentForPatient(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
-        close.onclick = () => popupBack.remove();
+        assignForDoc.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                assignForDoctor(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+            }, 410);
+        };
+
+        editDetails.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                editPatientDetails(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
+            }, 410);
+        }
+
+        setPayment.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                setPaymentForPatient(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body);
+            }, 410);
+        }
+
+        close.onclick = () => {
+            detailsBox.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+            }, 410);
+        }
 
         popupBack.appendChild(detailsBox);
         body.appendChild(popupBack);
@@ -2760,7 +2908,7 @@ function viewPatientDetails(events, details, patiSearch, serverRequest, filter, 
 
 }
 
-function editPatientDetails(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+function editPatientDetails(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
 {
 
     popupBack.innerHTML = "";
@@ -2862,21 +3010,32 @@ function editPatientDetails(detailsBox, details, patiSearch, serverRequest, filt
     form.appendChild(actionSection);
 
     form.classList.add("addDoc");
+
+    form.style.transform = "translate(-300%)";
+    form.style.transition = "all 0.4s";
+
+    setTimeout(() => {
+        form.style.transform = "translate(0%)";
+    }, 10);
+
     popupBack.appendChild(form);
     body.appendChild(popupBack);
 
-    submit.onclick = () => validateEditPatient(details.admissionNum, serverRequest, patiName, phoneNumber, patiAge, gender,
+    submit.onclick = () => validateEditPatient(details.admissionNum, form, serverRequest, patiName, phoneNumber, patiAge, gender,
         disease, patiNameWarn, phNumWarn, patiAgeWarn, genderWarn, diseaseWarn,
         patiSearch, filter, sortby, list, popupBack, body);
-    cancel.onclick = () => {
-        form.remove();
-        popupBack.appendChild(detailsBox);
 
+    cancel.onclick = () => {
+        form.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            popupBack.remove();
+            viewPatientDetails(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+        }, 410);
     }
 
 }
 
-function validateEditPatient(admissionNum, serverRequest, patiName, phoneNumber, age, gender,
+function validateEditPatient(admissionNum, form, serverRequest, patiName, phoneNumber, age, gender,
     disease, patiNameWarn, phNumWarn, ageWarn, genderWarn, diseaseWarn,
     patiSearch, filter, sortby, list, popupBack, body)
 {
@@ -2949,32 +3108,32 @@ function validateEditPatient(admissionNum, serverRequest, patiName, phoneNumber,
                 if (serverRequest.status == 400)
                 {
 
-                    if (parsedJson.name != undefined && parsedJson.name.length != 0)
+                    if (parsedJson.name != undefined)
                     {
                         patiNameWarn.innerText = parsedJson.name;
                         patiName.style.borderColor = "red";
                     }
-                    if (parsedJson.phoneNumber != undefined && parsedJson.phoneNumber.length != 0)
+                    if (parsedJson.phoneNumber != undefined)
                     {
                         phNumWarn.innerText = parsedJson.phoneNumber;
                         phoneNumber.style.borderColor = "red";
                     }
-                    if (parsedJson.age != undefined && parsedJson.age.length != 0)
+                    if (parsedJson.age != undefined)
                     {
                         ageWarn.innerText = parsedJson.age;
                         age.style.borderColor = "red";
                     }
-                    if (parsedJson.gender != undefined && parsedJson.gender.length != 0)
+                    if (parsedJson.gender != undefined)
                     {
                         genderWarn.innerText = parsedJson.gender;
                         gender.style.borderColor = "red";
                     }
-                    if (parsedJson.disease != undefined && parsedJson.disease.length != 0)
+                    if (parsedJson.disease != undefined)
                     {
                         diseaseWarn.innerText = parsedJson.disease;
                         disease.style.borderColor = "red";
                     }
-                    if (parsedJson.Message != undefined && parsedJson.Message.length != 0)
+                    if (parsedJson.Message != undefined)
                     {
                         alert(parsedJson.Message);
                     }
@@ -2982,9 +3141,12 @@ function validateEditPatient(admissionNum, serverRequest, patiName, phoneNumber,
                 }
                 else if (serverRequest.status == 200)
                 {
-                    popupBack.remove();
+                    form.style.transform = "translate(-300%)";
                     alert(parsedJson.Message);
                     getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                    setTimeout(() => {
+                        popupBack.remove();
+                    }, 410);
                 }
 
             }
@@ -2995,7 +3157,7 @@ function validateEditPatient(admissionNum, serverRequest, patiName, phoneNumber,
 
 }
 
-function setPaymentForPatient(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+function setPaymentForPatient(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
 {
 
     popupBack.innerHTML = "";
@@ -3045,6 +3207,14 @@ function setPaymentForPatient(detailsBox, details, patiSearch, serverRequest, fi
         form.appendChild(actionSection);
 
         form.classList.add("addDoc");
+
+        form.style.transform = "translate(-300%)";
+        form.style.transition = "all 0.4s";
+
+        setTimeout(() => {
+            form.style.transform = "translate(0%)";
+        }, 10);
+
         popupBack.appendChild(form);
         body.appendChild(popupBack);
 
@@ -3086,9 +3256,12 @@ function setPaymentForPatient(detailsBox, details, patiSearch, serverRequest, fi
                         }
                         else if (serverRequest.status == 200)
                         {
-                            popupBack.remove();
                             alert(parsedJson.Message);
                             getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                            form.style.transform = "translate(-300%)";
+                            setTimeout(() => {
+                                popupBack.remove();
+                            }, 410);
                         }
                     }
                 }
@@ -3102,14 +3275,16 @@ function setPaymentForPatient(detailsBox, details, patiSearch, serverRequest, fi
         }
 
         cancel.onclick = () => {
-            form.remove();
-            popupBack.appendChild(detailsBox);
-    
+            form.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+                viewPatientDetails(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+            }, 410);
         }
 
 }
 
-function assignForDoctor(detailsBox, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+function assignForDoctor(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
 {
 
     popupBack.innerHTML = "";
@@ -3159,6 +3334,14 @@ function assignForDoctor(detailsBox, details, patiSearch, serverRequest, filter,
         form.appendChild(actionSection);
 
         form.classList.add("addDoc");
+
+        form.style.transform = "translate(-300%)";
+        form.style.transition = "all 0.4s";
+
+        setTimeout(() => {
+            form.style.transform = "translate(0%)";
+        }, 10);
+
         popupBack.appendChild(form);
         body.appendChild(popupBack);
 
@@ -3200,9 +3383,12 @@ function assignForDoctor(detailsBox, details, patiSearch, serverRequest, filter,
                         }
                         else if (serverRequest.status == 200)
                         {
-                            popupBack.remove();
                             alert(parsedJson.Message);
                             getPatients(patiSearch, filter, sortby, list, popupBack, body);
+                            form.style.transform = "translate(-300%)";
+                            setTimeout(() => {
+                                popupBack.remove();
+                            }, 410);
                         }
                     }
                 }
@@ -3216,9 +3402,11 @@ function assignForDoctor(detailsBox, details, patiSearch, serverRequest, filter,
         }
 
         cancel.onclick = () => {
-            form.remove();
-            popupBack.appendChild(detailsBox);
-    
+            form.style.transform = "translate(-300%)";
+            setTimeout(() => {
+                popupBack.remove();
+                viewPatientDetails(events, details, patiSearch, serverRequest, filter, sortby, list, popupBack, body)
+            }, 410);
         }
 
 }

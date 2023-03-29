@@ -46,7 +46,7 @@ public class CheckSession extends HttpServlet
 				responseJsonObject.put("userId", adminId);
 				responseJsonObject.put("userName", resultSet.getString(1));
 				responseJsonObject.put("phoneNumber", resultSet.getString(2));
-				responseJsonObject.put("hopitalName", resultSet.getString(3));
+				responseJsonObject.put("hospitalName", resultSet.getString(3));
 			}
 			else
 			{

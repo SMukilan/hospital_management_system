@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import applicationVariables.ApplicationVariables;
+
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
@@ -27,7 +29,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter
 	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
-		System.out.println("Hii");
+//		System.out.println("Hii");
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
 		Cookie[] cookies = (httpRequest.getCookies() == null)? new Cookie[]{}: httpRequest.getCookies();
 		JSONObject responseObject = new JSONObject();
@@ -43,7 +45,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter
 				try
 				{
 					
-					PreparedStatement psmt = applicationVariables.ApplicationVariables.dbConnection.prepareStatement("select * from Sessions where Session like ?");
+					PreparedStatement psmt = ApplicationVariables.dbConnection.prepareStatement("select * from Sessions where Session like ?");
 					psmt.setString(1, sessionId);
 					ResultSet rs = psmt.executeQuery();
 					if (rs.next())

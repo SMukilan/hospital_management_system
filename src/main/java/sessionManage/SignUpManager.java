@@ -49,6 +49,7 @@ public class SignUpManager
 		
 		try
 		{
+			
 			fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
 		
 			String name = (String) fullJsonObject.get("name");

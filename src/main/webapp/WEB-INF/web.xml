@@ -81,6 +81,15 @@
 	    <url-pattern>/EditProfile</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>ChangePasswordFilter</filter-name>
+		<filter-class>filters.ChangePasswordFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ChangePasswordFilter</filter-name>
+	    <url-pattern>/ChangePassword</url-pattern>
+	</filter-mapping>
+
 	<!-- Doctor manage filters -->
 	
 	<filter>

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import applicationVariables.ApplicationVariables;
+
 /**
  * Servlet Filter implementation class AuthorizationFilter
  */
@@ -38,14 +40,14 @@ public class AuthorizationFilterForAdmin extends HttpFilter implements Filter
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
 
-		System.out.println("hello");
+//		System.out.println("hello");
 		JSONObject responseObject = new JSONObject();
 		String adminId = (String) request.getAttribute("loggedInUser");
 		
 		try
 		{
 			
-			PreparedStatement pstmt = applicationVariables.ApplicationVariables.dbConnection.prepareStatement("select * from Admin where adminUserId like ?");
+			PreparedStatement pstmt = ApplicationVariables.dbConnection.prepareStatement("select userName from Admin where adminUserId like ?");
 			pstmt.setString(1, adminId);
 			ResultSet rs = pstmt.executeQuery();
 			

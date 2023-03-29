@@ -1290,13 +1290,13 @@ function changePassword(serverRequest, userDetails, popupBack, body)
         }
         else if (!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(newPasswordValue))
         {
-            newPassWarn.innerText = "Use a strong password.";
+            newPassWarn.innerText = "Use a strong password!";
             newPassword.style.borderColor = "red";
         }
         else if (newPasswordValue != confirmPassValue)
         {
-            newPassWarn.innerText = "Passwords don't match!";
-            confirmPassWarn.innerText = "Passwords don't match!";
+            newPassWarn.innerText = "Passwords doesn't match!";
+            confirmPassWarn.innerText = "Passwords doesn't match!";
             confirmPass.style.borderColor = "red";
         }
         else

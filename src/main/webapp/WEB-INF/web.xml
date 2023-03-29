@@ -47,6 +47,7 @@
 	    <url-pattern>/SetPayment</url-pattern>
 	    <url-pattern>/AssignForDoctor</url-pattern>
 	    <url-pattern>/EditProfile</url-pattern>
+	    <url-pattern>/ChangePassword</url-pattern>
 	</filter-mapping>
 	
 	<filter>
@@ -66,18 +67,10 @@
 	    <url-pattern>/SetPayment</url-pattern>
 	    <url-pattern>/AssignForDoctor</url-pattern>
 	    <url-pattern>/EditProfile</url-pattern>
+	    <url-pattern>/ChangePassword</url-pattern>
 	</filter-mapping>
 
 	<!-- Profile manage filters -->
-
-	<filter>
-		<filter-name>CorsFilter</filter-name>
-		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
-		<init-param>
-			<param-name>cors.allowed.origins</param-name>
-			<param-value> http://mukilan-zstk315:8080, http://localhost:8080</param-value>
-		</init-param>
-	</filter>
 
 	<filter>
 		<filter-name>EditProfileFilter</filter-name>
@@ -166,6 +159,15 @@
     <servlet-mapping>
 	    <servlet-name>EditProfile</servlet-name>
 	    <url-pattern>/EditProfile</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>ChangePassword</servlet-name>
+     	<servlet-class>servlets.ChangePassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>ChangePassword</servlet-name>
+	    <url-pattern>/ChangePassword</url-pattern>
     </servlet-mapping>
 
 	<servlet>

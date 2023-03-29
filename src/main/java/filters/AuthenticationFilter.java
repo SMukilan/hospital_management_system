@@ -27,7 +27,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter
 	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
-//		System.out.println("Hii");
+		System.out.println("Hii");
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
 		Cookie[] cookies = (httpRequest.getCookies() == null)? new Cookie[]{}: httpRequest.getCookies();
 		JSONObject responseObject = new JSONObject();

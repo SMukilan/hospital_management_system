@@ -1176,6 +1176,199 @@ function editDetail(serverRequest, userDetails, popupBack, body)
 function changePassword(serverRequest, userDetails, popupBack, body)
 {
 
+    popupBack.innerHTML = "";
+    let passForm = document.createElement("div");
+    passForm.style.height = "550px";
+    passForm.style.width = "500px";
+
+    // Title
+
+    let title = document.createElement("h2");
+    title.innerText = "Change password";
+    passForm.appendChild(title);
+
+    // element one
+
+    let eleOne = document.createElement("div");
+    let password = document.createElement("input");
+    let passwordWarn = document.createElement("span");
+
+    password.setAttribute("placeholder", "Enter password");
+    password.setAttribute("type", "password");
+    eleOne.appendChild(password);
+    eleOne.appendChild(passwordWarn);
+    passForm.appendChild(eleOne);
+
+    // element Two
+
+    let eleTwo = document.createElement("div");
+    let newPassword = document.createElement("input");
+    let newPassWarn = document.createElement("span");
+
+    newPassword.setAttribute("placeholder", "Enter new password");
+    newPassword.setAttribute("type", "password");
+    eleTwo.appendChild(newPassword);
+    eleTwo.appendChild(newPassWarn);
+    passForm.appendChild(eleTwo);
+
+    // element Three
+
+    let eleThree = document.createElement("div");
+    let confirmPass = document.createElement("input");
+    let confirmPassWarn = document.createElement("span");
+    let showPassword = document.createElement("button");
+
+    confirmPass.setAttribute("placeholder", "Comfirm new password");
+    confirmPass.setAttribute("type", "password");
+    showPassword.innerText = "Show passwords";
+
+    showPassword.onclick = () =>
+    {
+        if (password.type == "password")
+        {
+            password.setAttribute("type", "text");
+            confirmPass.setAttribute("type", "text");
+            newPassword.setAttribute("type", "text");
+            showPassword.innerText = "Hide passwords";
+        }
+        else
+        {
+            password.setAttribute("type", "password");
+            confirmPass.setAttribute("type", "password");
+            newPassword.setAttribute("type", "password");
+            showPassword.innerText = "Show passwords";
+        }
+    }
+
+    eleThree.appendChild(confirmPass);
+    eleThree.appendChild(confirmPassWarn);
+    eleThree.appendChild(showPassword);
+    passForm.appendChild(eleThree);
+
+    // action section
+
+    let actionSection = document.createElement("div");
+    let update = document.createElement("button");
+    let cancel = document.createElement("button");
+
+    actionSection.style.flexDirection = "row";
+    actionSection.style.width = "300px";
+    actionSection.style.justifyContent = "space-between";
+    update.innerText = "Update";
+    cancel.innerText = "Cancel";
+    actionSection.appendChild(update);
+    actionSection.appendChild(cancel);
+    passForm.appendChild(actionSection);
+
+    passForm.classList.add("addDoc");
+    popupBack.appendChild(passForm);
+
+    setTimeout(() => {
+        passForm.style.transform = "translate(0%)";
+    }, 10);
+
+    update.onclick = () =>
+    {
+
+        let responseJson = {};
+        let passwordValue = password.value.trim();
+        let newPasswordValue = newPassword.value.trim().replaceAll(" ", "");
+        let confirmPassValue = confirmPass.value.trim();
+
+        passwordWarn.innerText = "";
+        newPassWarn.innerText = "";
+        confirmPassWarn.innerText = "";
+
+        password.style.borderColor = "";
+        newPassword.style.borderColor = "";
+        confirmPass.style.borderColor = "";
+
+        if (passwordValue.length <= 0)
+        {
+            passwordWarn.innerText = "Please enter your password.";
+            password.style.borderColor = "red";
+        }
+        else if (!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(newPasswordValue))
+        {
+            newPassWarn.innerText = "Use a strong password.";
+            newPassword.style.borderColor = "red";
+        }
+        else if (newPasswordValue != confirmPassValue)
+        {
+            newPassWarn.innerText = "Passwords don't match!";
+            confirmPassWarn.innerText = "Passwords don't match!";
+            confirmPass.style.borderColor = "red";
+        }
+        else
+        {
+    
+            responseJson.password = passwordValue;
+            responseJson.newPassword = newPasswordValue;
+            responseJson.confirmPass = confirmPassValue;
+    
+            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/ChangePassword");
+            serverRequest.setRequestHeader("Content-Type" ,"application/json");
+            serverRequest.send(JSON.stringify(responseJson));
+    
+            serverRequest.onreadystatechange = () =>
+            {
+    
+                if (serverRequest.readyState == 4)
+                {
+    
+                    console.log(serverRequest.responseText);
+                    let parsedJson = JSON.parse(serverRequest.responseText);
+    
+                    if (serverRequest.status == 400)
+                    {
+    
+                        if (parsedJson.password != undefined)
+                        {
+                            passwordWarn.innerText = parsedJson.password;
+                            password.style.borderColor = "red";
+                        }
+                        if (parsedJson.newPassword != undefined)
+                        {
+                            newPassWarn.innerText = parsedJson.newPassword;
+                            newPassword.style.borderColor = "red";
+                        }
+                        if (parsedJson.confirmPass != undefined)
+                        {
+                            confirmPassWarn.innerText = parsedJson.confirmPass;
+                            confirmPass.style.borderColor = "red";
+                        }
+                        if (parsedJson.Message != undefined)
+                        {
+                            alert(parsedJson.Message);                            
+                        }
+    
+                    }
+                    else if (serverRequest.status == 200)
+                    {
+                        alert(parsedJson.Message);
+
+                        passForm.style.transform = "translate(-300%)";
+                        setTimeout(() => {
+                            viewProflie(serverRequest, userDetails, popupBack, body);
+                        }, 410);
+                    }
+
+                }
+
+            }
+    
+        }
+
+    }
+
+    cancel.onclick = () =>
+    {
+        passForm.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            passForm.remove();
+            viewProflie(serverRequest, userDetails, popupBack, body)
+        }, 410);
+    }
 }
 
 // ---------- Doctor section ----------

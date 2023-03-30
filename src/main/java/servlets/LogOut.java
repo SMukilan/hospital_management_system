@@ -37,21 +37,19 @@ public class LogOut extends HttpServlet
 		
 		Cookie[] cookies = (request.getCookies() == null)? new Cookie[]{}: request.getCookies();
 		response.addCookie(new Cookie("SESSION", ""));
-		for(int i = 0; i < cookies.length; i++)
+		for(Cookie cookie: cookies)
 		{
 			
-			if (cookies[i].getName().equals("SESSION"))
+			if (cookie.getName().equals("SESSION"))
 			{
 				
-				String sessionId = cookies[i].getValue();
+				String sessionId = cookie.getValue();
 				try
 				{
-					
 					PreparedStatement sessionDeleteStatement = ApplicationVariables.dbConnection.prepareStatement("delete from Sessions where Session like ?");
 					sessionDeleteStatement.setString(1, sessionId);
 					sessionDeleteStatement.executeUpdate();
 					break;
-					
 				}
 				catch (Exception ex)
 				{

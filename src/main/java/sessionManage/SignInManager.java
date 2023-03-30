@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import applicationVariables.ApplicationVariables;
 import dataBaseUpdater.AddSessionOnDB;
@@ -33,7 +31,7 @@ public class SignInManager
 	public String[] validateSignIn(HttpServletRequest request) throws IOException
 	{
 		
-		String[] resultArray = new String[5];
+		String[] resultArray = new String[7];
 		String currentLine = "";
 		String jsonString = "";
 		BufferedReader reader = request.getReader();
@@ -45,20 +43,11 @@ public class SignInManager
 			currentLine = reader.readLine();
 		}
 		JSONParser jsonParser = new JSONParser();
-		JSONObject fullJsonObject = null;
 		
 		try
 		{
-			fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
-		}
-		catch (ParseException pe)
-		{
-			resultArray[2] = "400";
-			resultArray[0] = "Error occured please give valid input !!";
-		}
-		
-		try
-		{
+			
+			JSONObject fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
 			
 			String userId = (String) fullJsonObject.get("userId");
 			String password = (String) fullJsonObject.get("password");
@@ -88,6 +77,8 @@ public class SignInManager
 				resultArray[2] = "200";
 				resultArray[3] = result.getString(2);
 				resultArray[4] = result.getString(1);
+				resultArray[5] = result.getString(3);
+				resultArray[6] = result.getString(5);
 				resultArray[0] = "Signed in successfully.!";
 				
 			}
@@ -98,7 +89,7 @@ public class SignInManager
 			}
 			
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			resultArray[2] = "400";

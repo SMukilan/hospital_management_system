@@ -232,7 +232,6 @@ function doSignin(mainContainer, userId, userIdWarn, password, passWarn, warning
                 else if (serverRequest.status == 200)
                 {
                     alert(parsedJson.Message);
-                    document.cookie = serverRequest.cookie;
                     createDashBoard(mainContainer, serverRequest, parsedJson, body);
                 }
             }
@@ -506,7 +505,6 @@ function doSignup(mainContainer, name, nameWarn, phoneNumber, phNumWarn,
                 else if (serverRequest.status == 200)
                 {
                     alert(parsedJson.Message);
-                    document.cookie = serverRequest.cookie;
                     createDashBoard(mainContainer, serverRequest, parsedJson, body);
                 }
             }
@@ -975,6 +973,13 @@ function viewProflie(serverRequest, userDetails, popupBack, body)
         }, 410);
     };
 
+    deleteAcc.onclick = () => {
+        detailsBox.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            deleteAccount(serverRequest, userDetails, popupBack, body);
+        }, 410);
+    };
+
     close.onclick = () => {
         detailsBox.style.transform = "translate(-300%)";
         setTimeout(() => {
@@ -1113,8 +1118,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
     
                 if (serverRequest.readyState == 4)
                 {
-    
-                    console.log(serverRequest.responseText);
+
                     let parsedJson = JSON.parse(serverRequest.responseText);
     
                     if (serverRequest.status == 400)
@@ -1316,7 +1320,6 @@ function changePassword(serverRequest, userDetails, popupBack, body)
                 if (serverRequest.readyState == 4)
                 {
     
-                    console.log(serverRequest.responseText);
                     let parsedJson = JSON.parse(serverRequest.responseText);
     
                     if (serverRequest.status == 400)
@@ -1369,6 +1372,149 @@ function changePassword(serverRequest, userDetails, popupBack, body)
             viewProflie(serverRequest, userDetails, popupBack, body)
         }, 410);
     }
+}
+
+function deleteAccount(serverRequest, userDetails, popupBack, body)
+{
+
+    popupBack.innerHTML = "";
+    let passForm = document.createElement("div");
+    passForm.style.height = "500px";
+    passForm.style.width = "500px";
+
+    // Title
+
+    let title = document.createElement("h2");
+    title.innerText = "Delete account";
+    passForm.appendChild(title);
+
+    // element one
+
+    let eleOne = document.createElement("div");
+    let lable = document.createElement("h3");
+    let lable2 = document.createElement("h3");
+    let lable3 = document.createElement("h3");
+    let password = document.createElement("input");
+    let passwordWarn = document.createElement("span");
+    let showPassword = document.createElement("button");
+
+    lable.innerText = "Do you really need to delete your account?";
+    lable2.innerText = "You could never recover it!";
+    lable3.innerText = "Enter password to delete";
+    password.setAttribute("placeholder", "Enter password");
+    password.setAttribute("type", "password");
+    showPassword.innerText = "Show password";
+    eleOne.appendChild(lable);
+    eleOne.appendChild(lable2);
+    eleOne.appendChild(lable3);
+    eleOne.appendChild(password);
+    eleOne.appendChild(passwordWarn);
+    eleOne.appendChild(showPassword);
+    passForm.appendChild(eleOne);
+
+    showPassword.onclick = () =>
+    {
+
+        if (password.type == "password")
+        {
+            password.setAttribute("type", "text");
+            showPassword.innerText = "Hide password";
+        }
+        else
+        {
+            password.setAttribute("type", "password");
+            showPassword.innerText = "Show password";
+        }
+
+    }
+
+    // action section
+
+    let actionSection = document.createElement("div");
+    let deleteButt = document.createElement("button");
+    let cancel = document.createElement("button");
+
+    actionSection.style.flexDirection = "row";
+    actionSection.style.width = "300px";
+    actionSection.style.justifyContent = "space-between";
+    deleteButt.innerText = "Delete";
+    cancel.innerText = "Cancel";
+    actionSection.appendChild(deleteButt);
+    actionSection.appendChild(cancel);
+    passForm.appendChild(actionSection);
+
+    passForm.classList.add("addDoc");
+    popupBack.appendChild(passForm);
+
+    setTimeout(() => {
+        passForm.style.transform = "translate(0%)";
+    }, 10);
+
+    deleteButt.onclick = () =>
+    {
+        let responseJson = {};
+        let passwordValue = password.value.trim();
+
+        passwordWarn.innerText = "";
+        password.style.borderColor = "";
+
+        if (passwordValue.length <= 0)
+        {
+            passwordWarn.innerText = "Please enter your password!";
+            password.style.borderColor = "red";
+        }
+        else
+        {
+
+            responseJson.password = passwordValue;
+            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/DeleteAccount");
+            serverRequest.setRequestHeader("Content-Type" ,"application/json");
+            serverRequest.send(JSON.stringify(responseJson));
+
+            serverRequest.onreadystatechange = () =>
+            {
+
+                if (serverRequest.readyState == 4)
+                {
+                
+                    let parsedJson = JSON.parse(serverRequest.responseText);
+                    if (serverRequest.status == 400)
+                    {
+
+                        if (parsedJson.password != undefined)
+                        {
+                            passwordWarn.innerText = parsedJson.password;
+                            password.style.borderColor = "red";
+                        }
+                        if (parsedJson.Message != undefined)
+                        {
+                            alert(parsedJson.Message);
+                        }
+
+                    }
+                    else if (serverRequest.status == 200)
+                    {
+                        alert(parsedJson.Message);
+                        location.reload();
+                    }
+
+                }
+
+            }
+
+        }
+
+    };
+
+    cancel.onclick = () =>
+    {
+        passForm.style.transform = "translate(-300%)";
+        setTimeout(() => {
+            passForm.remove();
+            viewProflie(serverRequest, userDetails, popupBack, body)
+        }, 410);
+    };
+
 }
 
 // ---------- Doctor section ----------
@@ -1699,7 +1845,7 @@ function addDoctor(docSearch, serverRequest, filter, sortby, list, popupBack, bo
         docSearch, filter, sortby, list, form, popupBack, body);
     cancel.onclick = () =>
     {
-        form.style.transform = "translate(-188%)";
+        form.style.transform = "translate(-300%)";
         setTimeout(() => {
             popupBack.remove();
         }, 410);
@@ -1834,7 +1980,7 @@ function validateAddDoctor(serverRequest, docName, phoneNumber, specialist, qual
                 }
                 else if (serverRequest.status == 200)
                 {
-                    form.style.transform = "translate(-188%)";
+                    form.style.transform = "translate(-300%)";
                     setTimeout(() => {
                         popupBack.remove();
                         alert(parsedJson.Message);
@@ -2568,6 +2714,7 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
 
             if (payment.value > 0)
             {
+
                 paymentWarn.innerText = "";
                 payment.style.borderColor = "";
 
@@ -3564,12 +3711,12 @@ function assignForDoctor(events, details, patiSearch, serverRequest, filter, sor
                         let parsedJson = JSON.parse(serverRequest.responseText);
                         if (serverRequest.status == 400)
                         {
-                            if (parsedJson.docId != undefined && parsedJson.docId.length != 0)
+                            if (parsedJson.docId != undefined)
                             {
                                 docIdWarn.innerText = parsedJson.docId;
                                 docId.style.borderColor = "red";
                             }
-                            if (parsedJson.Message != undefined && parsedJson.Message.length != 0)
+                            if (parsedJson.Message != undefined)
                             {
                                 alert(parsedJson.Message);
                             }

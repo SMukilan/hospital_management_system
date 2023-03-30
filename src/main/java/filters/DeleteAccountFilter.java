@@ -20,10 +20,10 @@ import org.json.simple.parser.JSONParser;
 import applicationVariables.ApplicationVariables;
 
 /**
- * Servlet Filter implementation class ChangePasswordFilter
+ * Servlet Filter implementation class DeleteAccountFilter
  */
 
-public class ChangePasswordFilter extends HttpFilter implements Filter
+public class DeleteAccountFilter extends HttpFilter implements Filter
 {
        
     private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class ChangePasswordFilter extends HttpFilter implements Filter
 	/**
      * @see HttpFilter#HttpFilter()
      */
-    public ChangePasswordFilter() {
+    public DeleteAccountFilter() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,11 +46,10 @@ public class ChangePasswordFilter extends HttpFilter implements Filter
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	
 	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
-
+		
 		JSONObject responseObject = new JSONObject();
 		String adminId = (String) request.getAttribute("loggedInUser");
 		String currentLine = "";
@@ -71,8 +70,6 @@ public class ChangePasswordFilter extends HttpFilter implements Filter
 			
 			fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
 			String password = (String) fullJsonObject.get("password");
-			String newPassword = (String) fullJsonObject.get("newPassword");
-			String confirmPass = (String) fullJsonObject.get("confirmPass");
 			
 			PreparedStatement pstmt = ApplicationVariables.dbConnection.prepareStatement("select userName from Admin where adminUserId like ? and AdminStatus like 'ACTIVE'");
 			pstmt.setString(1, adminId);
@@ -87,27 +84,8 @@ public class ChangePasswordFilter extends HttpFilter implements Filter
 				resultSet = pstmt.executeQuery();
 				if (resultSet.next())
 				{
-					
-					if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$"))
-					{
-						((HttpServletResponse)response).setStatus(400);
-						responseObject.put("newPassword", "Use a strong password!");
-						response.getWriter().append(responseObject.toString());
-					}
-					else if (!newPassword.equals(confirmPass))
-					{
-						((HttpServletResponse)response).setStatus(400);
-						responseObject.put("newPassword", "Passwords doesn't match!");
-						responseObject.put("confirmPass", "Passwords doesn't match!");
-						response.getWriter().append(responseObject.toString());
-					}
-					else
-					{
-						request.setAttribute("password", password);
-						request.setAttribute("newPassword", newPassword);
-						chain.doFilter(request, response);
-					}
-					
+					request.setAttribute("password", password);
+					chain.doFilter(request, response);	
 				}
 				else
 				{
@@ -138,8 +116,7 @@ public class ChangePasswordFilter extends HttpFilter implements Filter
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
-	public void init(FilterConfig fConfig) throws ServletException
-	{
+	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
 	}
 

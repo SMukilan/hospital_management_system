@@ -31,11 +31,11 @@ public class CheckSession extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 
-		response.addHeader("Access-Control-Allow-Origin", "*");
 		JSONObject responseJsonObject = new JSONObject();
 		String adminId = (String) request.getAttribute("loggedInUser");
 		try
 		{
+			
 			PreparedStatement sessionPreState = ApplicationVariables.dbConnection.prepareStatement("select userName, phoneNumber, hopitalName from Admin where adminUserId like ?");
 			sessionPreState.setString(1, adminId);
 			ResultSet resultSet = sessionPreState.executeQuery();

@@ -48,6 +48,7 @@
 	    <url-pattern>/AssignForDoctor</url-pattern>
 	    <url-pattern>/EditProfile</url-pattern>
 	    <url-pattern>/ChangePassword</url-pattern>
+	    <url-pattern>/DeleteAccount</url-pattern>
 	</filter-mapping>
 	
 	<filter>
@@ -68,6 +69,7 @@
 	    <url-pattern>/AssignForDoctor</url-pattern>
 	    <url-pattern>/EditProfile</url-pattern>
 	    <url-pattern>/ChangePassword</url-pattern>
+	    <url-pattern>/DeleteAccount</url-pattern>
 	</filter-mapping>
 
 	<!-- Profile manage filters -->
@@ -88,6 +90,15 @@
 	<filter-mapping>
 		<filter-name>ChangePasswordFilter</filter-name>
 	    <url-pattern>/ChangePassword</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>DeleteAccountFilter</filter-name>
+		<filter-class>filters.DeleteAccountFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>DeleteAccountFilter</filter-name>
+	    <url-pattern>/DeleteAccount</url-pattern>
 	</filter-mapping>
 
 	<!-- Doctor manage filters -->
@@ -177,6 +188,15 @@
     <servlet-mapping>
 	    <servlet-name>ChangePassword</servlet-name>
 	    <url-pattern>/ChangePassword</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+     	<servlet-name>DeleteAccount</servlet-name>
+     	<servlet-class>servlets.DeleteAccount</servlet-class>
+    </servlet>
+    <servlet-mapping>
+	    <servlet-name>DeleteAccount</servlet-name>
+	    <url-pattern>/DeleteAccount</url-pattern>
     </servlet-mapping>
 
 	<servlet>

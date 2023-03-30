@@ -55,6 +55,8 @@ public class SignInServlet extends HttpServlet
 		responseJsonObject.put("Message", resultArray[0]);
 		responseJsonObject.put("userName", resultArray[3]);
 		responseJsonObject.put("userId", resultArray[4]);
+		responseJsonObject.put("phoneNumber", resultArray[5]);
+		responseJsonObject.put("hospitalName", resultArray[6]);
 		response.setStatus(Integer.valueOf(resultArray[2]));
 		
 		if (resultArray[1] != null)

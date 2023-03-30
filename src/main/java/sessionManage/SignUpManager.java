@@ -33,7 +33,7 @@ public class SignUpManager
 	public String[] validateSignUp(HttpServletRequest request) throws IOException
 	{
 		
-		String[] resultArray = new String[8];
+		String[] resultArray = new String[10];
 		String currentLine = "";
 		String jsonString = "";
 		BufferedReader reader = request.getReader();
@@ -45,12 +45,11 @@ public class SignUpManager
 			currentLine = reader.readLine();
 		}
 		JSONParser jsonParser = new JSONParser();
-		JSONObject fullJsonObject = null;
 		
 		try
 		{
 			
-			fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
+			JSONObject fullJsonObject = (JSONObject) jsonParser.parse(jsonString);
 		
 			String name = (String) fullJsonObject.get("name");
 			String phoneNumber = (String) fullJsonObject.get("phoneNumber");
@@ -120,6 +119,8 @@ public class SignUpManager
 					resultArray[2] = "200";
 					resultArray[3] = name;
 					resultArray[4] = adminUserId;
+					resultArray[5] = phoneNumber;
+					resultArray[6] = hospitalName;
 					resultArray[0] = "Signed up successfully.!\nYour user id is " + adminUserId + ".";
 					
 				}

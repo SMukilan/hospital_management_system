@@ -1438,7 +1438,10 @@ function deleteAccount(serverRequest, userDetails, popupBack, body)
     actionSection.style.width = "300px";
     actionSection.style.justifyContent = "space-between";
     deleteButt.innerText = "Delete";
+    deleteButt.classList.add("removeButt");
+    deleteButt.style.margin = "0px";
     cancel.innerText = "Cancel";
+    cancel.style.margin = "0px";
     actionSection.appendChild(deleteButt);
     actionSection.appendChild(cancel);
     passForm.appendChild(actionSection);

@@ -4,7 +4,7 @@ window.onload = () =>
 
     let serverRequest = new XMLHttpRequest();
         
-    serverRequest.open("POST", "http://localhost:8080/HosManSysServlet/CheckSession");
+    serverRequest.open("POST", "./CheckSession");
 
     serverRequest.onreadystatechange = () =>
     {
@@ -213,7 +213,7 @@ function doSignin(mainContainer, userId, userIdWarn, password, passWarn, warning
         responseJson.userId = userIdValue;
         responseJson.password = passwordValue;
         
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/Signin");
+        serverRequest.open("POST" ,"./Signin");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
     
@@ -456,7 +456,7 @@ function doSignup(mainContainer, name, nameWarn, phoneNumber, phNumWarn,
         responseJson.confirmPassword = confirmPasswordValue;
         responseJson.hospitalName = hospitalNameValue;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/Signup");
+        serverRequest.open("POST" ,"./Signup");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -856,7 +856,7 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     logOut.onclick = () =>
     {
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/LogOut");
+        serverRequest.open("POST" ,"./LogOut");
         serverRequest.send();
 
         serverRequest.onreadystatechange = () =>
@@ -1109,7 +1109,7 @@ function editDetail(serverRequest, userDetails, popupBack, body)
             responseJson.phoneNumber = phoneNumberValue;
             responseJson.hospitalName = hospitalNameValue;
     
-            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/EditProfile");
+            serverRequest.open("POST" ,"./EditProfile");
             serverRequest.setRequestHeader("Content-Type" ,"application/json");
             serverRequest.send(JSON.stringify(responseJson));
     
@@ -1310,7 +1310,7 @@ function changePassword(serverRequest, userDetails, popupBack, body)
             responseJson.newPassword = newPasswordValue;
             responseJson.confirmPass = confirmPassValue;
     
-            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/ChangePassword");
+            serverRequest.open("POST" ,"./ChangePassword");
             serverRequest.setRequestHeader("Content-Type" ,"application/json");
             serverRequest.send(JSON.stringify(responseJson));
     
@@ -1470,7 +1470,7 @@ function deleteAccount(serverRequest, userDetails, popupBack, body)
         {
 
             responseJson.password = passwordValue;
-            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/DeleteAccount");
+            serverRequest.open("POST" ,"./DeleteAccount");
             serverRequest.setRequestHeader("Content-Type" ,"application/json");
             serverRequest.send(JSON.stringify(responseJson));
 
@@ -1530,7 +1530,7 @@ function getDoctors(docSearch, serverRequest, filter, sortby, list, popupBack, b
     responseJson.filter = filter.value;
     responseJson.sortby = sortby.value;
 
-    serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/GetDoctors");
+    serverRequest.open("POST" ,"./GetDoctors");
     serverRequest.setRequestHeader("Content-Type" ,"application/json");
     serverRequest.send(JSON.stringify(responseJson));
 
@@ -1700,7 +1700,7 @@ function removeDoctor(docDetails, docSearch, serverRequest, filter, sortby, list
         let responseJson = {};
         responseJson.docId = docDetails.docId;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/RemoveDoctor");
+        serverRequest.open("POST" ,"./RemoveDoctor");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -1931,7 +1931,7 @@ function validateAddDoctor(serverRequest, docName, phoneNumber, specialist, qual
         responseJson.amOrPm = amOrPmValue;
         responseJson.totalAvailTime = totalAvailTimeValue;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/AddDoctor");
+        serverRequest.open("POST" ,"./AddDoctor");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -2308,7 +2308,7 @@ function validateEditDoctor(docId, form, serverRequest, docName, phoneNumber, sp
         responseJson.amOrPm = amOrPmValue;
         responseJson.totalAvailTime = totalAvailTimeValue;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/EditDoctor");
+        serverRequest.open("POST" ,"./EditDoctor");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -2385,7 +2385,7 @@ function viewAssignedPatients(event, details,  docSearch, serverRequest, filter,
     responseJson.filter = "all";
     responseJson.sortby = "firstAdmitted";
 
-    serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/GetPatients");
+    serverRequest.open("POST" ,"./GetPatients");
     serverRequest.setRequestHeader("Content-Type" ,"application/json");
     serverRequest.send(JSON.stringify(responseJson));
 
@@ -2533,7 +2533,7 @@ function getPatients(patiSearch, filter, sortby, list, popupBack, body)
     responseJson.filter = filter.value;
     responseJson.sortby = sortby.value;
 
-    serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/GetPatients");
+    serverRequest.open("POST" ,"./GetPatients");
     serverRequest.setRequestHeader("Content-Type" ,"application/json");
     serverRequest.send(JSON.stringify(responseJson));
 
@@ -2726,7 +2726,7 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
                 responseJson.admissionNum = patientDetails.admissionNum;
                 responseJson.payment = payment.value;
 
-                serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/SetPayment");
+                serverRequest.open("POST" ,"./SetPayment");
                 serverRequest.setRequestHeader("Content-Type" ,"application/json");
                 serverRequest.send(JSON.stringify(responseJson));
 
@@ -2829,7 +2829,7 @@ function dischargePatient(patientDetails, patiSearch, serverRequest, filter, sor
             let responseJson = {};
             responseJson.admissionNum = patientDetails.admissionNum;
 
-            serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/DischargePatient");
+            serverRequest.open("POST" ,"./DischargePatient");
             serverRequest.setRequestHeader("Content-Type" ,"application/json");
             serverRequest.send(JSON.stringify(responseJson));
 
@@ -3042,7 +3042,7 @@ function validateAdmitPatient(serverRequest, form, patiName, phoneNumber, age, g
         responseJson.gender = genderValue;
         responseJson.disease = diseaseValue;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/AdmitPatient");
+        serverRequest.open("POST" ,"./AdmitPatient");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -3437,7 +3437,7 @@ function validateEditPatient(admissionNum, form, serverRequest, patiName, phoneN
         responseJson.gender = genderValue;
         responseJson.disease = diseaseValue;
 
-        serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/EditPatient");
+        serverRequest.open("POST" ,"./EditPatient");
         serverRequest.setRequestHeader("Content-Type" ,"application/json");
         serverRequest.send(JSON.stringify(responseJson));
 
@@ -3574,7 +3574,7 @@ function setPaymentForPatient(events, details, patiSearch, serverRequest, filter
                 responseJson.admissionNum = details.admissionNum;
                 responseJson.payment = payment.value;
 
-                serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/SetPayment");
+                serverRequest.open("POST" ,"./SetPayment");
                 serverRequest.setRequestHeader("Content-Type" ,"application/json");
                 serverRequest.send(JSON.stringify(responseJson));
 
@@ -3701,7 +3701,7 @@ function assignForDoctor(events, details, patiSearch, serverRequest, filter, sor
                 responseJson.admissionNum = details.admissionNum;
                 responseJson.docId = docId.value;
 
-                serverRequest.open("POST" ,"http://localhost:8080/HosManSysServlet/AssignForDoctor");
+                serverRequest.open("POST" ,"./AssignForDoctor");
                 serverRequest.setRequestHeader("Content-Type" ,"application/json");
                 serverRequest.send(JSON.stringify(responseJson));
 

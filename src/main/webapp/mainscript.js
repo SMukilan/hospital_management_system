@@ -231,7 +231,6 @@ function doSignin(mainContainer, userId, userIdWarn, password, passWarn, warning
                 }
                 else if (serverRequest.status == 200)
                 {
-                    alert(parsedJson.Message);
                     createDashBoard(mainContainer, serverRequest, parsedJson, body);
                 }
             }
@@ -504,7 +503,6 @@ function doSignup(mainContainer, name, nameWarn, phoneNumber, phNumWarn,
                 }
                 else if (serverRequest.status == 200)
                 {
-                    alert(parsedJson.Message);
                     createDashBoard(mainContainer, serverRequest, parsedJson, body);
                 }
             }

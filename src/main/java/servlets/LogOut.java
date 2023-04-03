@@ -37,7 +37,7 @@ public class LogOut extends HttpServlet
 		
 		Cookie[] cookies = (request.getCookies() == null)? new Cookie[]{}: request.getCookies();
 		response.addCookie(new Cookie("SESSION", ""));
-		for(Cookie cookie: cookies)
+		for (Cookie cookie: cookies)
 		{
 			
 			if (cookie.getName().equals("SESSION"))

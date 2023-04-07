@@ -550,7 +550,6 @@ function createDashBoard(mainContainer, serverRequest, userDetails, body)
     mainContainer.id = "dashboard";
 
     let nameDetails = document.createElement("div");
-    nameDetails.style.width = "150px";
         let userName = document.createElement("h3");
         userName.innerText = userDetails.userName;
         userName.style.margin = "5px";
